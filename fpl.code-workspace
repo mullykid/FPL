@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "frontend"
+		},
+		{
+			"path": "auth-proxy"
+		},
+		{
+			"path": "vaastav_fpl"
+		},
+		{
+			"path": "data"
+		}
+	]
+}
