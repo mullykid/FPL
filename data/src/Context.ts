@@ -50,7 +50,7 @@ export async function initApplicationContext(configWrapper: any = new ConfigHelp
 
     app.get('/api/team_stats', function(req, res) {
         let team = req.query.team ? req.query.team : ""
-        let year = req.query.year ? req.query.year : 2020 //TO get current yar
+        let year = req.query.year ? req.query.year : 2020 //TO DO get current year
         if (team === ""){  
              "Team not provided in API call"
         }
