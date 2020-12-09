@@ -125,26 +125,137 @@ function readCsv(file: string){
         //.pipe(transform)
 }
 
-export async function getTeamData(){
+
+/*
+"teams": [
+    {
+      "id": "71",
+      "title": "Aston Villa",
+      "history": [
+        {
+          "h_a": "h",
+          "xG": 0.80527,
+          "xGA": 0.849709,
+          "npxG": 0.80527,
+          "npxGA": 0.0885404,
+          "ppda": {
+            "att": 89,
+            "def": 20
+          },
+          "ppda_allowed": {
+            "att": 247,
+            "def": 14
+          },
+          "deep": 17,
+          "deep_allowed": 2,
+          "scored": 1,
+          "missed": 0,
+          "xpts": 1.1601,
+          "result": "w",
+          "date": "2020-09-21 17:00:00",
+          "wins": 1,
+          "draws": 0,
+          "loses": 0,
+          "pts": 3,
+          "npxGD": 0.7167296000000001
+        },
+*/
+export interface ITeam{
+    id: string,
+    title: string,
+    history: ITeamHistory[]
+}
+
+export interface ITeamHistory{
+    id: string,
+    deep: number,
+    deep_allowed: number,
+    draws: number,
+    loses: number,
+    missed: number,
+    h_a: string,
+    npxG: number,
+    npxGA: number,
+    npxGD: number,
+    ppda: any,
+    ppda_allowed: any,
+    pts: number,
+    result:string,
+    scored: number,
+    wins: number,
+    xG: number,
+    xGA: number,
+    xpts: number
+}
+export interface IPlayer{
+    id: string,
+    player_name: string,
+    games: number,
+    time: number,
+    goals: number,
+    xG: number,
+    assists: number,
+    xA: number,
+    shots: number,
+    key_passes: number,
+    yellow_cards: number,
+    red_cards: number,
+    position: string,
+    team_title: string,
+    npg: number,
+    npxG: number,
+    xGChain: number,
+    xGBuildup: number
+}
+
+
+export async function getTeamData(league: 'epl', year: 2020) {
     let headers = new Headers();
-    let players: iPlayer[] = []
 
     headers.append('Content-Type', 'application/json');
 
     try {
         //const res = await fetch(this.conn.url);
-        let response = await authFetch('/api/team_stats',{
-            team: 'Everton'
+        let response = await authFetch('/api/teams',{
+            league: league,
+            year: year
         })
-    
-        if (response){
-            console.log(response)
-        }//// 
-        return response
 
+        let teams:ITeam[] = []
+
+        if (response.results){
+            teams = response.results[0]
+            return teams
+        }
+        return teams
     }
     catch (error) {
         console.log(error + " response accessing" + '/api/team_stats')
+    };
+
+}
+
+export async function getPlayerData(league: 'epl', year: 2020) {
+    let headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+
+    try {
+        //const res = await fetch(this.conn.url);
+        let response = await authFetch('/api/players',{
+            league: league,
+            year: year
+        })
+
+        let players:IPlayer[] = []
+    //    console.log(response.results)
+        if (response.results){
+            players = response.results
+        }
+        return players
+    }
+    catch (error) {
+        console.log(error + " response accessing" + '/api/players')
     };
 
 }

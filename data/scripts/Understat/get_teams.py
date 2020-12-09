@@ -6,16 +6,18 @@ import aiohttp
 
 from understat import Understat
 
-player = ""
-player = sys.argv[1]
+league = ""
+year = ""
+league = sys.argv[1]
+year = sys.argv[2]
 
-async def main(player: str):
+async def main(league: str, year: str):
     async with aiohttp.ClientSession() as session:
         understat = Understat(session)         
-        data = await understat.get_player_grouped_stats(player)
+        data = await understat.get_teams(league,year),
 
         print(json.dumps(data))
 
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(player))
+loop.run_until_complete(main(league,year))
